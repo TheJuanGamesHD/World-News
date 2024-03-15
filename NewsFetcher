@@ -1,0 +1,38 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+
+public class NewsFetcher {
+    private final String apiKey = "YOUR_NEWS_API_KEY"; // Replace with your News API key
+
+    public String fetchNews() {
+        try {
+            URL url = new URL("https://newsapi.org/v2/top-headlines?category=general&language=en&apiKey=" + apiKey);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.connect();
+
+            // Check if the connection is successful
+            int responseCode = conn.getResponseCode();
+            if (responseCode != 200) {
+                throw new RuntimeException("HttpResponseCode: " + responseCode);
+            } else {
+                StringBuilder informationString = new StringBuilder();
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    informationString.append(line);
+                }
+                reader.close();
+
+                return informationString.toString();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+}
