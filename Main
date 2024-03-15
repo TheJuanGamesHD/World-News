@@ -1,0 +1,15 @@
+public class Main {
+    public static void main(String[] args) {
+        String apiKey = "YOUR_API_KEY_HERE"; // Replace with your NewsAPI key
+        NewsApiClient client = new NewsApiClient(apiKey);
+
+        try {
+            NewsApiClient.NewsResponse response = client.getTopHeadlines("us"); // Use country code, e.g., "us" for the United States
+            for (NewsApiClient.Article article : response.articles) {
+                System.out.println(article.title + ": " + article.url);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
