@@ -1,0 +1,21 @@
+import com.google.cloud.translate.Translate;
+import com.google.cloud.translate.TranslateOptions;
+import com.google.cloud.translate.Translation;
+
+public class NewsTranslator {
+    private final Translate translate;
+
+    public NewsTranslator() {
+        // Initializes the translator, assumes Google Application Credentials are properly set in the environment
+        translate = TranslateOptions.getDefaultInstance().getService();
+    }
+
+    public String translateText(String text, String targetLanguage) {
+        Translation translation = translate.translate(
+                text,
+                Translate.TranslateOption.targetLanguage(targetLanguage),
+                Translate.TranslateOption.model("base")); // You can use "nmt" for Neural Machine Translation
+
+        return translation.getTranslatedText();
+    }
+}
